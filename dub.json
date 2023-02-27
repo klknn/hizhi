@@ -1,0 +1,14 @@
+{
+	"authors": [
+		"klknn"
+	],
+	"copyright": "Copyright © 2022, klknn",
+	"dependencies": {
+		"audio-formats": "~>1.5.3",
+		"ffmpeg-d": "~>4.4.1",
+		"gtk-d": "~>3.10.0"
+	},
+	"description": "A minimal D application.",
+	"license": "BSL-1.0",
+	"name": "hizhi"
+}
