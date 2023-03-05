@@ -40,47 +40,38 @@ class HizhiMainWindow : MainWindow {
 
 class AudioDrawingArea : DrawingArea {
  public:
-  this(float[] buf) {
-    _audioBuf = buf;
+  this(AudioStream* audio) {
+    assert(audio.canSeek);
+    _audio = audio;
     addOnDraw(&drawAudio);
   }
 
  private:
   bool drawAudio(Scoped!Context context, Widget widget) {
-    float maxval = maxElement(_audioBuf);
-    logInfo("max val: ", maxval);
+    _audio.seekPosition(0);
     context.setLineWidth(1);
     context.setLineCap(CairoLineCap.ROUND); // options are: BUTT, ROUND, SQUARE
     context.setLineJoin(CairoLineJoin.ROUND); // options are: MITER, ROUND, BEVEL
     context.moveTo(0, 240);
-    foreach (i, f; _audioBuf[0 .. $ / 2]) {
-      if (i % 10 != 0) continue;
-      context.lineTo(640 - cast(int) i / 10, f / maxval * 240 + 240);
+
+    float[10] buf;
+    for (int i = 0; i < _audio.getLengthInFrames; i += _audio.readSamplesFloat(buf)) {
+      context.lineTo(640 - i / cast(int) buf.length, buf[0] * 240 + 240);
     }
+    context.moveTo(640, 240);
     context.stroke();
     return true;
   }
 
-  float[] _audioBuf;
-}
-
-float[] loadWav(string path) {
-  AudioStream input;
-  input.openFromFile(path);
-  logInfo("sample rate: ", input.getSamplerate);
-  logInfo("channels: ", input.getNumChannels);
-
-  float[] buf;
-  buf.length = input.getLengthInFrames * input.getNumChannels;
-  int length = input.readSamplesFloat(buf);
-  logInfo("length: ", length);
-  return buf;
+  AudioStream* _audio;
 }
 
 void main(string[] args) {
   Main.init(args);
 
-  auto draw = new AudioDrawingArea(loadWav("testdata/scream.wav"));
+  auto audio = new AudioStream;
+  audio.openFromFile("testdata/scream.wav");
+  auto draw = new AudioDrawingArea(audio);
   auto drawBox = new Box(Orientation.VERTICAL, /*padding=*/10);
   drawBox.packStart(draw, /*expand=*/true, /*fill=*/true, /*padding=*/0);
 
