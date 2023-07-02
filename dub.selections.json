@@ -1,0 +1,10 @@
+{
+	"fileVersion": 1,
+	"versions": {
+		"audio-formats": "1.5.3",
+		"dplug": "12.8.4",
+		"ffmpeg-d": "4.4.1",
+		"gtk-d": "3.10.0",
+		"intel-intrinsics": "1.11.9"
+	}
+}

@@ -39,14 +39,14 @@ class HizhiMainWindow : MainWindow {
 }
 
 class AudioDrawingArea : DrawingArea {
- public:
+public:
   this(AudioStream* audio) {
     assert(audio.canSeek);
     _audio = audio;
     addOnDraw(&drawAudio);
   }
 
- private:
+private:
   bool drawAudio(Scoped!Context context, Widget widget) {
     _audio.seekPosition(0);
     context.setLineWidth(1);
@@ -72,8 +72,8 @@ void main(string[] args) {
   auto audio = new AudioStream;
   audio.openFromFile("testdata/scream.wav");
   auto draw = new AudioDrawingArea(audio);
-  auto drawBox = new Box(Orientation.VERTICAL, /*padding=*/10);
-  drawBox.packStart(draw, /*expand=*/true, /*fill=*/true, /*padding=*/0);
+  auto drawBox = new Box(Orientation.VERTICAL, /*padding=*/ 10);
+  drawBox.packStart(draw, /*expand=*/ true, /*fill=*/ true, /*padding=*/ 0);
 
   MainWindow window = new HizhiMainWindow;
   window.add(drawBox);
