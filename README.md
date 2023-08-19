@@ -27,3 +27,5 @@ $ sudo apt install libgtk-3-dev libavcodec-dev libavformat-dev libavdevice-dev
 
 - Use mold linker to build an app faster. gtk-3 is too slow with other linkers.
 - See https://gtkdcoding.com/ for gtk-3 and gtk-d tips
+- For OSX, if you install GTK like `brew install gtk+3 atk`, you also need to
+  `export DYLD_LIBRARY_PATH=/opt/homebrew/lib:$DYLD_LIBRARY_PATH` in `.bashrc`.

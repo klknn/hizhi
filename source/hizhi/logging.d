@@ -28,7 +28,7 @@ void logPrefix(LogSeverity severity, string file, int line) {
       date.minute,
       date.second,
       convert!("hnsecs", "usecs")(curr.stdTime % 1_000_000),
-      thisThreadID(),
+      cast(int) thisThreadID(),
       baseName(file),
       line);
 }
